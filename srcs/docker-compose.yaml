@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+	mariadb:
+		image: mariadb
+		build: . #
+# create two users
+		volumes: /home/lpeggy/data #for wp and db
+		environment:
+			# name, password, user
+		restart: on-failure #always
+
+	wordpress:
+		image: wordpress
+		build: . #
+		links:
+			- mariadb
+		volumes: /home/lpeggy/data #for wp and db
+		restart: on-failure #always
+	nginx:
+		image: nginx
+		build: . #
+		ports:
+			- 443:443
+			#lpeggy.42.fr
+		links:
+			- wordpress
+		# dependency
+		restart: on-failure
