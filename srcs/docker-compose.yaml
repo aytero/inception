@@ -1,29 +1,38 @@
-version: '3'
+version: '3.9'
 services:
 
 	mariadb:
 		image: mariadb
-		build: . #
+		build:
+            context: ./mariadb #
+            dockerfile: Dockerfile
 # create two users
 		volumes: /home/lpeggy/data #for wp and db
 		environment:
 			# name, password, user
-		restart: on-failure #always
+		restart_policy:
+            condition: on-failure
 
 	wordpress:
 		image: wordpress
-		build: . #
-		links:
+		build:
+            context: ./wordpress #
+            dockerfile: Dockerfile
+		dependency:
 			- mariadb
 		volumes: /home/lpeggy/data #for wp and db
-		restart: on-failure #always
+		restart_policy:
+            condition: on-failure #any
 	nginx:
 		image: nginx
-		build: . #
+		build:
+            context: ./nginx #
+            dockerfile: Dockerfile
 		ports:
 			- 443:443
-			#lpeggy.42.fr
-		links:
+		#extra_hosts: #ports(?)
+        #   lpeggy.42.fr
+        dependency:
 			- wordpress
-		# dependency
-		restart: on-failure
+		restart_policy:
+            condition: on-failure
