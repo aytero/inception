@@ -1,13 +1,9 @@
 FROM	debian:buster
-#or linux alpine
 
-RUN		apt-get update && apt-get -y upgrade
-
-#WORKDIR
-RUN		apt-get -y install nginx openssl vim
+RUN		apt-get update && apt-get -y upgrade\
+		apt-get -y install nginx openssl
 
 COPY	./nginx_config ./
 
-#EXPOSE	443
-
-#CMD		bash run.sh
+CMD		["./tools/start_nginx.sh"]
+#better use exec form + signal handling script to avoid probs with pid 1

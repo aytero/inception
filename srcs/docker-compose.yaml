@@ -1,38 +1,55 @@
-version: '3.9'
+version: '3.8'
 services:
+    mariadb:
+        image: mariadb
+        build:
+            context: ./requirements/mariadb
+            dockerfile: Dockerfile
+        networks:
+            - inception_custom
+        volumes: ~/lpeggy/data/mariadb
+        env_file: .env
+        #environment:
+            # name, password, user
+        expose:
+            - "3306"
+        restart: on-failure
+        #restart_policy:
+        #    condition: on-failure
 
-	mariadb:
-		image: mariadb
-		build:
-            context: ./mariadb #
+    wordpress:
+        image: wordpress
+        build:
+            context: ./requirements/wordpress
             dockerfile: Dockerfile
-# create two users
-		volumes: /home/lpeggy/data #for wp and db
-		environment:
-			# name, password, user
-		restart_policy:
-            condition: on-failure
+        depends_on:
+            - mariadb
+        networks:
+            - inception_custom
+        volumes: ~/lpeggy/data/wordpress
+        env_file: .env
+        expose:
+            - "9000"
+        restart: on-failure
+        #restart_policy:
+        #    condition: on-failure #any
+    nginx:
+        image: nginx
+        build:
+            context: ./requirements/nginx
+            dockerfile: Dockerfile
+        ports:
+            - "443"
+        extra_hosts:
+           "lpeggy.42.fr"
+        depends_on:
+            - wordpress
+        networks:
+            - inception_custom
+        restart: on-failure
+        #restart_policy:
+        #   condition: on-failure
 
-	wordpress:
-		image: wordpress
-		build:
-            context: ./wordpress #
-            dockerfile: Dockerfile
-		dependency:
-			- mariadb
-		volumes: /home/lpeggy/data #for wp and db
-		restart_policy:
-            condition: on-failure #any
-	nginx:
-		image: nginx
-		build:
-            context: ./nginx #
-            dockerfile: Dockerfile
-		ports:
-			- 443:443
-		#extra_hosts: #ports(?)
-        #   lpeggy.42.fr
-        dependency:
-			- wordpress
-		restart_policy:
-            condition: on-failure
+networks:
+    inception_custom:
+        driver: bridge
