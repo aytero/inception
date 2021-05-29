@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#chown
-#chmod
+chown -R www-data /var/www/*
+chmod -R 755 /var/www/*
 
 # DB config
 #CREATE DATABASE '$DBNAME';
