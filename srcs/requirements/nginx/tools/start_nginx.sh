@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# chown chmod
-chown -R www-data /var/www/*
-chmod -R 755 /var/www/*
-
 # nginx
 mv /var/www/nginx_config /etc/nginx/sites-avaliable/
 ln -s /etc/nginx/sites-avaliable/nginx_config /etc/nginx/sites-enabled/

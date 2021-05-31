@@ -1,0 +1,22 @@
+server {
+	listen 443 ssl;
+	
+	ssl on;
+	ssl_certificate /etc/ssl/certs/server.crt;
+	ssl_certificate_key /etc/ssl/private/server.key;
+# more ssl configs
+
+	server_name lpeggy.42.fr;
+
+	root /var/www/html/;
+	index index.html index.htm index.php index.nginx-debian.html;
+	location / {
+		autoindex on;
+		try_files $uri $uri/ =404;
+	}
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass wordpress:9000;
+	}
+}

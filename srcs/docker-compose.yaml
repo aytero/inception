@@ -2,6 +2,7 @@ version: '3.8'
 services:
     mariadb:
         image: mariadb
+        container_name: mariadb
         build:
             context: ./requirements/mariadb
             dockerfile: Dockerfile
@@ -9,16 +10,11 @@ services:
             - inception_custom
         volumes: ~/lpeggy/data/mariadb
         env_file: .env
-        #environment:
-            # name, password, user
-        expose:
-            - "3306"
-        restart: on-failure
-        #restart_policy:
-        #    condition: on-failure
+        restart: always
 
     wordpress:
         image: wordpress
+        container_name: wordpress
         build:
             context: ./requirements/wordpress
             dockerfile: Dockerfile
@@ -28,28 +24,33 @@ services:
             - inception_custom
         volumes: ~/lpeggy/data/wordpress
         env_file: .env
-        expose:
-            - "9000"
-        restart: on-failure
-        #restart_policy:
-        #    condition: on-failure #any
+        #expose:
+        #    - "9000"
+        restart: always
     nginx:
         image: nginx
+        container_name: nginx
         build:
             context: ./requirements/nginx
             dockerfile: Dockerfile
         ports:
-            - "443"
-        extra_hosts:
-           "lpeggy.42.fr"
+            - "443:443"
+        #extra_hosts:
+        #   "lpeggy.42.fr"
         depends_on:
             - wordpress
         networks:
             - inception_custom
-        restart: on-failure
-        #restart_policy:
-        #   condition: on-failure
+        volumes: ~/lpeggy/data/wordpress #
+        restart: always
+
+volumes:
+    wp:
+        driver:
+        name:
+    db:
 
 networks:
     inception_custom:
+        name: inception_custom
         driver: bridge

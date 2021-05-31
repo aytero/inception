@@ -3,10 +3,13 @@ FROM	debian:buster
 RUN		apt-get update && apt-get -y upgrade\
 		apt-get -y install nginx openssl
 
-COPY	./tools/nginx_config ./tools/start_nginx.sh ./
+COPY	./tools/nginx_config ./tools/start_nginx.sh /var/www/
+
+RUN		chmod +x /var/www/start_nginx.sh
 
 EXPOSE	443
 
-CMD		["./tools/start_nginx.sh"]
+ENTRYPOINT	["/var/www/start_nginx.sh"]
+
+CMD			["nginx" "-g" "daemon off"]
 #better use exec form + signal handling script to avoid probs with pid 1
-#ENTRYPOINT	[chet] instead of cmd + script
