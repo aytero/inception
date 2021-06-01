@@ -22,11 +22,10 @@ re:
 #	docker-machine restart $(MACHINE_NAME)
 
 clean:
-	#cd ./srcs && docker-compose down
-	#docker stop ...(all containers)
-	#docker rm ...(containers)
-	#docker rmi (images)
-	#docker volume rm
-	#docker network rm
+	docker stop $$(docker ps -qa)
+	docker rm $$(docker ps -qa)
+	docker rmi $$(docker images -qa)
+	docker volume rm $$(docker volume ls -q)
+	docker network rm $$(docker network ls -q)
 
 .PHONY: all start stop down re clean
