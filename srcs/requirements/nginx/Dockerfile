@@ -1,13 +1,14 @@
-FROM	debian:buster
+FROM		debian:buster
 
-RUN		apt-get update && apt-get -y upgrade\
-		apt-get -y install nginx openssl
+RUN			apt-get update && apt-get -y upgrade\
+			apt-get -y install nginx openssl vim\
+			php-gd php-xml
 
-COPY	./tools/nginx_config ./tools/start_nginx.sh /var/www/
+COPY		./tools/nginx_config ./tools/start_nginx.sh /var/www/
 
-RUN		chmod +x /var/www/start_nginx.sh
+RUN			chmod +x /var/www/start_nginx.sh
 
-EXPOSE	443
+EXPOSE		443
 
 ENTRYPOINT	["/var/www/start_nginx.sh"]
 

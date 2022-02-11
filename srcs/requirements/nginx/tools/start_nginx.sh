@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # nginx
 mv /var/www/nginx_config /etc/nginx/sites-avaliable/

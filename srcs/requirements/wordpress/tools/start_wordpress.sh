@@ -1,20 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-chown -R www-data /var/www/*
-chmod -R 755 /var/www/*
+if ! [ -f "/var/www/html/wp-config.php" ]; then
+		mkdir -p /var/www/html/
+		wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+		chmod +x wp-cli.phar
+		mv wp-cli.phar /usr/local/bin/wp
 
-# php-fpm config
-#wget https://files.phpmyadmin.net/phpMyAdmin/5.1.0/phpMyAdmin-5.1.0-all-languages.tar.gz
-#tar -xzvf phpMyAdmin-5.1.0-all-languages.tar.gz
-#rm -rf phpMyAdmin-5.1.0-all-languages.tar.gz
-#mv phpMyAdmin-5.1.0-all-languages /var/www/ft_server/phpMyAdmin
-mv config.inc.php /var/www/phpmyadmin
+		cd var/www/html/
+		wp core download --allow-root
+		mv /var/www/wp-config.php var/www/html/
 
-# wordpress config
-#wget https://wordpress.org/latest.tar.gz
-#tar -xzvf latest.tar.gz
-#rm -rf latest.tar.gz
-mv wp-config.php /var/www/wordpress
+		wp core install --allow-root \
+			--url=${WP_WEBSITE_URL} \
+			--title=${WP_WEBSITE_TITLE} \
+			--admin_user=${WP_ADMIN_USER} \
+			--admin_password=${WP_ADMIN_PASSWORD} \
+			--admin_email=${WP_ADMIN_EMAIL}
 
-# service start
-service php-fpm start
+		wp user create --allow-root pony pony@42.fr --user_pass=2121
+
+		mv * /var/www/html/
+		#mv /var/www/object-cache.php /var/www/html/wp-content/
+fi
+exec "$@"

@@ -1,4 +1,5 @@
 
+DOCKER_COMPOSE_FILE = ./srcs/docker-compose.yaml
 all: start
 	# -C ./srcs/
 	#source ./virtualbox_setup.sh
@@ -7,16 +8,16 @@ all: start
 	#cd ./srcs && pwd && echo "hello there"
 
 start:
-	docker-compose -f srcs/docker-compose.yaml up
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up
 
 stop:
-	docker-compose -f srcs/docker-compose.yaml stop
+	docker-compose -f $(DOCKER_COMPOSE_FILE) stop
 
 down:
-	docker-compose -f srcs/docker-compose.yaml down
+	docker-compose -f $(DOCKER_COMPOSE_FILE) down
 
 re:
-	docker-compose -f srcs/docker-compose.yaml up --build
+	docker-compose -f $(DOCKER_COMPOSE_FILE) up --build
 
 #restart_machine:
 #	docker-machine restart $(MACHINE_NAME)
