@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-    mariadb:
+    mysql:
         image: mariadb
         container_name: mariadb
         build:
@@ -8,7 +8,8 @@ services:
             dockerfile: Dockerfile
         networks:
             - inception_custom
-        volumes: "db_vol:/var/lib/db_vol"
+        volumes:
+            - db:/var/lib/mysql
         env_file: .env
         restart: always
 
@@ -19,10 +20,11 @@ services:
             context: ./requirements/wordpress
             dockerfile: Dockerfile
         depends_on:
-            - mariadb
+            - mysql
         networks:
             - inception_custom
-        volumes: "wp_vol:/var/lib/wp_vol"
+        volumes:
+            - wp:/var/www/html
         env_file: .env
         #expose:
         #    - "9000"
@@ -42,23 +44,24 @@ services:
             - wordpress
         networks:
             - inception_custom
-        volumes: "wp_vol:/var/www/html"
+        volumes:
+            - wp:/var/www/html
         restart: always
 
 volumes:
-    wp_vol:
+    wp:
         name: wordpress
         driver: local
         driver_opts:
             type: none
-            device: /home/lpeggy/data/wordpress
+            device: /home/lpeggy/data/wp
             o: bind
-    db_vol:
-        name: mariadb
+    db:
+        name: db
         driver: local
         driver_opts:
             type: none
-            device: /home/lpeggy/data/mariadb
+            device: /home/lpeggy/data/db
             o: bind
 
 networks:

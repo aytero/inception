@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 if ! [ -f "/var/www/html/wp-config.php" ]; then
 		mkdir -p /var/www/html/

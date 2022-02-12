@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # DB config
 chown -R mysql:mysql /var/lib/mysql
