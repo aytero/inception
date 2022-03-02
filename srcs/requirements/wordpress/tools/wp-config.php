@@ -5,9 +5,17 @@ define( 'DB_NAME', 'wp' );
 define( 'DB_USER', 'lpeggy' );
 define( 'DB_PASSWORD', '2121' );
 define( 'DB_HOST', 'mariadb' );
-define( 'DB_CACHE', 'true' );
-define( 'DB_CACHE_KEY_SALT', 'saltysalt' );
 define( 'DB_CHARSET', 'utf8' );
+define( 'DB_COLLATE', '' );
+#define( 'DB_CACHE', 'true' );
+
+define( 'WP_CACHE', 'true' );
+define( 'WP_CACHE_KEY_SALT', 'saltysaltredis' );
+define( 'WP_REDIS_HOST', 'redis' );
+define( 'WP_REDIS_PORT', '6379' );
+define( 'WP_REDIS_TIMEOUT', '1' );
+define( 'WP_REDIS_DATABASE', '0' );
+
 
 /**#@+
  * Authentication Unique Keys and Salts.
@@ -19,7 +27,6 @@ define( 'DB_CHARSET', 'utf8' );
  * @since 2.6.0
  */
 
-/*
 define( 'AUTH_KEY',         'put your unique phrase here' );
 define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
 define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
@@ -28,7 +35,6 @@ define( 'AUTH_SALT',        'put your unique phrase here' );
 define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
 define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
 define( 'NONCE_SALT',       'put your unique phrase here' );
-*/
 
 /**#@-*/
 

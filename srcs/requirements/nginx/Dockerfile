@@ -1,17 +1,15 @@
 FROM		debian:buster
 
-RUN			apt-get update
-RUN			apt-get -y upgrade
-RUN			apt-get -y install nginx openssl vim\
-				php-gd php-xml
+RUN		apt-get update
+RUN		apt-get -y install nginx openssl vim php-gd php-xml
 
-COPY		./tools/nginx_config ./tools/start_nginx.sh /var/www/
+COPY		./tools/nginx_config /var/www/
+COPY		./tools/start_nginx.sh /var/www/
 
-RUN			chmod +x /var/www/start_nginx.sh
+RUN		chmod +x /var/www/start_nginx.sh
 
 EXPOSE		443
 
-ENTRYPOINT	["bash", "/var/www/start_nginx.sh"]
+ENTRYPOINT	["/var/www/start_nginx.sh"]
 
-CMD			["nginx" "-g" "daemon off"]
-#better use exec form + signal handling script to avoid probs with pid 1
+CMD		["nginx", "-g", "daemon off;"]
